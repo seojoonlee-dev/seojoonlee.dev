@@ -16,9 +16,9 @@ body {
     flex-direction: column;
     align-items: left;
     justify-content: top;
-    height: 100vh;
-    background-color: #282828;
-    margin: 0;
+    background-color: #FFF0E3;
+    margin: 40px;
+    position:relative;
 }
 
 h1 { 
@@ -39,13 +39,24 @@ p {
 }
 
 hr {
+    position:absolute;
+    bottom: 40px;
+    right: 40px;
+    left: 40px;
+    align-self: stretch;
     color: #FFF0E3;
+    width: auto;
 }
 
 button {
     background-color: rgba(0,0,0,0);
     width: 30px;
     height: 30px;
+}
+
+#foot {
+    position:absolute;
+    bottom: 0px;
 }
 
 #img {
@@ -72,17 +83,24 @@ button {
 
 #tabbar {
     display: grid;
-    gap: 20px;
-}
-
-#view {
-    padding: 10px;
+    margin-bottom: 30px;
 }
 
 #name {
     display: flex;
     gap: 20px;
     align-items: flex-end;
+}
+
+#logo {
+    width: 30px;
+}
+
+#view {
+    padding: 30px;
+    background-color: #282828;
+    min-height: 1500px;
+    position: relative;
 }
 
 .multiline {

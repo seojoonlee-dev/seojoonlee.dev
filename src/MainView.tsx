@@ -8,6 +8,7 @@ function MainView() {
                 <p>seojoonlee@korea.ac.kr</p>
                 <p>010-4161-1462</p>
             </div>
+            <hr></hr>
         </>
     );
 }

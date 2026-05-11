@@ -8,8 +8,6 @@ function App() {
     <div id="view">
       <Header></Header>
       <MainView></MainView>
-      <hr></hr>
-      <Footer></Footer>
     </div>
   );
 }

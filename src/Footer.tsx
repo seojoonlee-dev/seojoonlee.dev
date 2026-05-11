@@ -1,8 +1,8 @@
 function Footer() {
     return(
-        <footer>
-            <p>&copy; {new Date().getFullYear()} Seojoon Lee</p>
-        </footer>
+        <div id="foot">
+            <hr></hr>
+        </div>
     );
 }
 
