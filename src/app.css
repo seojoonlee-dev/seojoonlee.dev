@@ -10,13 +10,19 @@ body {
     align-items: left;
     justify-content: top;
     background-color: #FFF0E3;
-    margin: 40px;
+    margin: clamp(0.5vw,5vw,40px);
     position:relative;
+}
+
+@media (max-width: 500px) {
+    body {
+        margin: 0;
+    }
 }
 
 h1 { 
     color: #FFF0E3;
-    font-size: 48px;
+    font-size: clamp(36px, 7vw, 48px);
     font-weight: 700;
     margin-top: 6px;
 }
