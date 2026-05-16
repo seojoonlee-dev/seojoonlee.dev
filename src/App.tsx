@@ -3,8 +3,7 @@ import React from 'react';
 import { Routes, Route, Link} from 'react-router-dom';
 import Home from './Home';
 import About from './About';
-import SideBarOpened from './SideBarOpened';
-import Footer from './Footer';
+import SideBar from './SideBar';
 
 function App() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -20,13 +19,16 @@ function App() {
         </nav>
       </header>
       <aside className={`sidebar-container ${isOpen ? "is-open" : ""}`}>
-        <SideBarOpened/>
+        <SideBar/>
       </aside>
       <Routes>\
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
       </Routes>
-      <Footer></Footer>
+      <div id="foot">
+        <div id="line"></div>
+          <p>&copy; 2026 Seojoon Lee | All assets hand made.</p>
+        </div>
     </div>
   );
 }

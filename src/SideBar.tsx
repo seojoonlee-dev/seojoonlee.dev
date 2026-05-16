@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function SideBarOpened() {
+function SideBar() {
     return(
         <aside id="sideBarOpened">
             <div id="sideBar">
@@ -12,4 +12,4 @@ function SideBarOpened() {
     );
 }
 
-export default SideBarOpened;
+export default SideBar;
