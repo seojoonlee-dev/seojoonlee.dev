@@ -1,3 +1,3 @@
-# Seojoonlee.dev
+# seojoonlee.dev
 
-React + Typescript
+My website! Uses React + TS
