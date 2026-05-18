@@ -6,7 +6,7 @@ function About() {
             <div>
                 <h3>Education</h3>
                 <p>Mar. 2026 ~ Current: Korea University, Department of Artificial Intelligence</p>
-                <p>Mar. 2023 ~ Feb. 2026: Seoul Highschool</p>
+                <p>Mar. 2023 ~ Feb. 2026: Seoul High School</p>
             </div>
         </div>
     );
