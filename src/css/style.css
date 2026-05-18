@@ -269,12 +269,12 @@ button:hover {
 
     .projectImage {
         width: 100%;
-        max-width: calc(100vw - 40px);
+        max-width: calc(100vw - 20px);
     }
 
     .projectVideo {
         width: 100% !important;
-        max-width: calc(100vw - 40px);
+        max-width: calc(100vw - 20px);
     }
 }
 
