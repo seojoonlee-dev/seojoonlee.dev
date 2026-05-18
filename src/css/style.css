@@ -269,10 +269,10 @@ button:hover {
 
     .projectImage {
         width: 100%;
-        max-width: 100%;
+        max-width: 100vw;
     }
     .projectVideo {
-        max-width: 100%;
+        max-width: 100vw;
     }
 }
 
