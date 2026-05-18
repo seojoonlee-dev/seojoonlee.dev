@@ -28,7 +28,6 @@ h3 {
 
 p {
     color: #FFF0E3;
-    white-space: nowrap;
 }
 
 hr {
@@ -250,7 +249,7 @@ button:hover {
     }
 
     p {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     #arrow {
