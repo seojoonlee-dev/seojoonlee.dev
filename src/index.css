@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'SourceSerif4';
+  src: url('./assets/SourceSerif4-VariableFont_opsz\,wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -6,4 +13,19 @@
 body {
   background-color: #111111;
   color: white;
+  font-family: 'SourceSerif4', sans-serif;
+}
+
+button {
+  color: white;
+  background: none;
+  border: none;
+}
+
+a {
+  color: white;
+}
+
+a:hover {
+  color: gray;
 }
