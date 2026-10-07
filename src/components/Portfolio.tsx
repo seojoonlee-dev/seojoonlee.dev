@@ -373,7 +373,6 @@ export default function Portfolio() {
     <Scene onFrame={onFrame} onLeave={onLeave} home={!away} back={{ visible: phase === "open" || phase === "opening", onClick: () => navigate("/") }}>
       {!away && (
         <Meta
-          title="Seojoon Lee · Software Developer"
           description="Software Developer based in Seoul, South Korea."
           path="/"
           image="/og/home.jpg"

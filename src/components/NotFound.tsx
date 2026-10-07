@@ -7,7 +7,7 @@ import "../style/not-found.css";
 export default function NotFound() {
   return (
     <Scene>
-      <Meta title="Page not found · Seojoon Lee" description="This page does not exist." image="/og/home.jpg" />
+      <Meta description="This page does not exist." image="/og/home.jpg" />
       <meta name="robots" content="noindex" />
 
       {/* numeral */}

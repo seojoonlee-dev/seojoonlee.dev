@@ -65,7 +65,6 @@ export default function ProjectPage({ project, phase, heroRef, pageRef, nextTitl
   return (
     <div className={`page${state}`} ref={pageRef} aria-label={project.title}>
       <Meta
-        title={`${project.title} · Seojoon Lee`}
         description={project.tagline}
         path={`/projects/${project.slug}`}
         image={`/og/${project.slug}.jpg`}

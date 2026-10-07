@@ -34,7 +34,6 @@ export default function Profile() {
   return (
     <Scene>
       <Meta
-        title="Profile · Seojoon Lee"
         description="Software Developer based in Seoul, South Korea."
         path="/profile"
         image="/og/profile.jpg"
