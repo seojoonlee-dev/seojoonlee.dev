@@ -9,7 +9,6 @@ export default function Header({ back }: HeaderProps) {
     <header className="site-header">
       <Link to="/" className="site-name">
         <span className="site-name-title">Seojoon Lee</span>
-        <span className="site-name-role">Software developer</span>
       </Link>
       <nav className="site-nav" aria-label="Site">
         {back && (
