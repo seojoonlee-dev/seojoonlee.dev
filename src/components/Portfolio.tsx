@@ -15,6 +15,7 @@ const strip = P >= 3 ? projects : [...projects, ...projects];
 const N = strip.length;
 const wrap = (i: number) => ((i % N) + N) % N;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function toward(from: number, to: number) {
   let k = wrap(to - from);
@@ -162,7 +163,7 @@ export default function Portfolio() {
       refocus.current = !a || a === document.body || !!a.closest(".page, .site-back");
     };
     const start = img?.getBoundingClientRect();
-    if (!target || !start || !fly(() => start, () => target.getBoundingClientRect(), 900, finish)) {
+    if (!target || !start || !fly(() => start, () => target.getBoundingClientRect(), still() ? 1 : 900, finish)) {
       closeTimer.current = window.setTimeout(finish, 920);
     }
   }
@@ -196,7 +197,7 @@ export default function Portfolio() {
     let drawn = NaN;
     const tick = () => {
       const m = motion.current;
-      m.pos += (m.target - m.pos) * m.k;
+      m.pos += (m.target - m.pos) * (still() ? 0.25 : m.k);
       if (Math.abs(m.target - m.pos) < 0.0005) m.pos = m.target;
       const at = wrap(Math.round(m.pos));
       if (at >= P && m.pos === m.target && m.target === m.base && live.current.phase === "closed") {
@@ -298,7 +299,7 @@ export default function Portfolio() {
       const shot = shots.current[at];
       if (shot && at % P === urlIdx && settled()) {
         flatten(at);
-        flightFrom.current = shot.getBoundingClientRect();
+        flightFrom.current = still() ? null : shot.getBoundingClientRect();
         setOpenIdx(at);
         setPhase("opening");
       } else {
@@ -348,6 +349,7 @@ export default function Portfolio() {
   function onFrame(k: number, p: Pointer) {
     const { s, gap, mobile: m, vh } = geo.current;
     if (live.current.phase !== "closed" || m || p.x < 0) return false;
+    const calm = still();
     const i = live.current.cur;
     if (aimed.current !== i) {
       reset(aimed.current);
@@ -372,7 +374,7 @@ export default function Portfolio() {
     tl.x += (tx - tl.x) * k;
     tl.y += (ty - tl.y) * k;
     const t = slide.querySelector<HTMLElement>(".tilt");
-    if (t) t.style.transform = `rotateX(${(tl.y * 2.5).toFixed(3)}deg) rotateY(${(tl.x * -2.5).toFixed(3)}deg)`;
+    if (t && !calm) t.style.transform = `rotateX(${(tl.y * 2.5).toFixed(3)}deg) rotateY(${(tl.x * -2.5).toFixed(3)}deg)`;
     const ex = Math.max(left - p.x, 0, p.x - (left + w));
     const ey = Math.max(top - p.y, 0, p.y - (top + h));
     const glow = Math.max(0, 1 - Math.hypot(ex, ey) / (420 * (w / 760)));
