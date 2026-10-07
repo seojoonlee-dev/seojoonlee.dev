@@ -1,0 +1,62 @@
+/* numeral */
+.nf-numeral {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.nf-numeral span {
+  display: block;
+  font-size: clamp(220px, 32vw, 460px);
+  line-height: 1;
+  color: #3D1E21;
+}
+
+/* message */
+.nf-main {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.nf-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.nf-text .label {
+  display: block;
+}
+
+.nf-title {
+  font-size: clamp(44px, 6vw, 72px);
+  font-weight: 400;
+  line-height: 1;
+  color: #CDC7C7;
+}
+
+.nf-body {
+  font-size: clamp(18px, 2vw, 22px);
+  font-style: italic;
+  color: #938D8D;
+}
+
+.scene .nf-back {
+  display: block;
+  margin-top: 18px;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}

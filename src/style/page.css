@@ -1,0 +1,282 @@
+/* page */
+.page {
+  position: absolute;
+  inset: 0;
+  z-index: 16;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+.page-inner {
+  width: min(1200px, calc(100% - 80px), calc((100dvh - 390px) * 2.527));
+  min-width: min(640px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 130px 0 160px;
+}
+
+/* reveal */
+.rise {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0);
+  transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.16, 0.84, 0.3, 1);
+}
+
+.page.in .rise {
+  opacity: 1;
+  transform: none;
+}
+
+.page.out .rise {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition-delay: 0s !important;
+}
+
+/* top */
+.page-top {
+  display: grid;
+  grid-template-columns: minmax(0, 820fr) minmax(0, 320fr);
+  grid-template-areas:
+    "hero details"
+    "title .";
+  column-gap: 60px;
+  row-gap: 35px;
+  margin-bottom: 45px;
+}
+
+.hero {
+  grid-area: hero;
+  position: relative;
+  aspect-ratio: 760 / 440;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.page-title {
+  grid-area: title;
+}
+
+.page-title .label {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.page-title h1 {
+  font-size: clamp(52px, 6vw, 84px);
+  font-weight: 400;
+  line-height: 0.95;
+  color: #CDC7C7;
+}
+
+.page-title p {
+  margin-top: 12px;
+  font-size: clamp(19px, 1.7vw, 24px);
+  line-height: 1.4;
+  font-style: italic;
+  color: #938D8D;
+}
+
+.page-details {
+  grid-area: details;
+  padding-top: 6px;
+}
+
+.page-details dl {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.page-details dt {
+  margin-bottom: 6px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.muted {
+  color: #938D8D;
+}
+
+/* sections */
+.page-inner > .rise + .rise {
+  margin-top: 110px;
+}
+
+.labeled {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 48px;
+}
+
+.labeled > .label {
+  font-weight: 400;
+  padding-top: 8px;
+}
+
+.paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 820px;
+  font-size: clamp(19px, 1.7vw, 24px);
+  line-height: 1.55;
+}
+
+.paragraphs p + p {
+  color: #938D8D;
+}
+
+.page-figure img {
+  display: block;
+  width: 80%;
+  aspect-ratio: 1190 / 833;
+  object-fit: cover;
+}
+
+.page-figure figcaption {
+  margin-top: 18px;
+  font-size: 19px;
+  line-height: 1.5;
+  color: #938D8D;
+}
+
+.items {
+  list-style: none;
+  display: grid;
+  gap: 28px 48px;
+  font-size: 19px;
+  line-height: 1.5;
+  color: #938D8D;
+}
+
+.items-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.item-title {
+  display: block;
+  font-size: 24px;
+  color: #CDC7C7;
+}
+
+.steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  font-size: 19px;
+  line-height: 1.5;
+  color: #938D8D;
+}
+
+.steps .label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.steps-note {
+  grid-column: 2;
+  margin-top: 32px;
+  font-size: 21px;
+  font-style: italic;
+  color: #CDC7C7;
+}
+
+.wip {
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  color: #A6767C;
+}
+
+/* next */
+.page-next button {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  font: inherit;
+  color: #CDC7C7;
+  text-align: left;
+  cursor: pointer;
+}
+
+.page-next-title {
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+}
+
+.page-next button:hover .page-next-title {
+  color: #A6767C;
+}
+
+/* mobile */
+@media (max-width: 820px) {
+  .page-inner {
+    width: calc(100% - 40px);
+    min-width: 0;
+    padding-top: 110px;
+  }
+
+  .page-top {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "hero"
+      "title"
+      "details";
+    row-gap: 28px;
+  }
+
+  .page-inner > .rise + .rise {
+    margin-top: 72px;
+  }
+
+  .labeled {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .labeled > .label {
+    padding-top: 0;
+  }
+
+  .page-figure img {
+    width: 100%;
+  }
+
+  .items-2,
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .steps-note {
+    grid-column: 1;
+  }
+
+  .page-next button {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

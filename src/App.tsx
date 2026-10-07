@@ -1,25 +1,24 @@
-import './style/App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router'
-import Home from './components/Home';
-import Resume from './components/Resume';
+import Portfolio from './components/Portfolio';
+import NotFound from './components/NotFound';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Portfolio />,
+    children: [
+      { index: true },
+      { path: "projects/:slug" },
+    ],
   },
   {
-    path: "/resume",
-    element: <Resume />
+    path: "*",
+    element: <NotFound />
   },
 ]);
 
 function App() {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App

@@ -1,0 +1,318 @@
+@font-face {
+  font-family: 'IM Fell English';
+  src: url('../assets/fonts/IMFellEnglish-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IM Fell English';
+  src: url('../assets/fonts/IMFellEnglish-Italic.woff2') format('woff2');
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Manufacturing Consent';
+  src: url('../assets/fonts/ManufacturingConsent-Regular.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* scene */
+.scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: #101010;
+  background-image: url('../assets/textures/grain.png');
+  background-size: 256px 256px;
+  font-family: 'IM Fell English', serif;
+  color: #CDC7C7;
+}
+
+.scene a {
+  color: #A6767C;
+  text-decoration: none;
+}
+
+.scene a:hover {
+  color: #CDC7C7;
+}
+
+.scene a:focus-visible,
+.scene button:focus-visible {
+  outline: 1px dotted #A6767C;
+  outline-offset: 6px;
+}
+
+.scene .label {
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #A6767C;
+}
+
+/* darkening */
+.shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+/* fog */
+.fog-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fog-wob {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+.fog-wob-a {
+  animation: fog-wob-a 23s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.fog-wob-b {
+  animation: fog-wob-b 31s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: -9s;
+}
+
+.fog {
+  position: absolute;
+  left: 0;
+  bottom: -70px;
+  width: 8192px;
+  height: 830px;
+  background-image: url('../assets/textures/fog.webp');
+  background-size: 4096px 830px;
+  background-repeat: repeat-x;
+  will-change: transform;
+}
+
+.fog-back {
+  opacity: 0.1;
+  animation: fog-slide 140s linear infinite;
+}
+
+.fog-front {
+  bottom: -80px;
+  height: 860px;
+  background-size: 4096px 860px;
+  opacity: 0.075;
+  animation: fog-slide 80s linear infinite;
+  animation-delay: -33s;
+}
+
+@keyframes fog-slide {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-4096px, 0, 0); }
+}
+
+/* mouse */
+.mouse {
+  will-change: transform;
+}
+
+/* fill */
+.fill {
+  position: absolute;
+  inset: 0;
+}
+
+/* drift */
+.drift {
+  offset-anchor: 0 0;
+  offset-rotate: 0deg;
+  animation: drift 12s linear infinite;
+  will-change: transform;
+}
+
+/* edge gradients */
+.fade-top,
+.fade-bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  z-index: 19;
+  pointer-events: none;
+}
+
+.fade-top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+.fade-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+/* header */
+.site-header {
+  position: absolute;
+  top: 36px;
+  left: 56px;
+  right: 56px;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.site-name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.site-name-title {
+  white-space: nowrap;
+  font-family: 'Manufacturing Consent', serif;
+  font-size: 28px;
+  line-height: 1;
+  color: #9D485B;
+}
+
+.site-name-role {
+  font-size: 14px;
+  font-style: italic;
+  color: #938D8D;
+}
+
+.site-nav {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.site-back {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: #A6767C;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.site-back:hover {
+  color: #CDC7C7;
+}
+
+.site-back.on {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* lens */
+.lens {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url('../assets/textures/lens.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+/* flashlight */
+.flashlight {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  pointer-events: none;
+  transform: translate(50vw, 50vh);
+  will-change: transform;
+}
+
+.flashlight-glow {
+  position: absolute;
+  left: -300px;
+  top: -300px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 1, 1);
+  background-image: radial-gradient(closest-side, rgba(205, 199, 199, 0.02), rgba(205, 199, 199, 0.008) 55%, rgba(205, 199, 199, 0));
+  background-repeat: no-repeat;
+}
+
+.scene.lit .flashlight-glow {
+  transform: scale(1);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fog-wob,
+  .fog,
+  .drift {
+    animation: none;
+  }
+
+  .drift {
+    offset-path: none !important;
+  }
+
+  .mouse {
+    transform: none !important;
+  }
+}
+
+/* mobile */
+@media (max-width: 640px) {
+  .site-header {
+    top: 24px;
+    left: 20px;
+    right: 20px;
+  }
+
+  .site-nav {
+    gap: 16px;
+    font-size: 12px;
+  }
+
+  .flashlight {
+    display: none;
+  }
+}
+
+@keyframes fog-wob-a {
+  0% { transform: translate3d(0px,0px,0) scaleY(1); }
+  24% { transform: translate3d(-19.4px,-18.7px,0) scaleY(1.031); }
+  41% { transform: translate3d(-19.9px,-4.8px,0) scaleY(1.021); }
+  54% { transform: translate3d(27.4px,18.8px,0) scaleY(1.035); }
+  66% { transform: translate3d(54.2px,-19.5px,0) scaleY(1.072); }
+  85% { transform: translate3d(-53.8px,-6.9px,0) scaleY(0.955); }
+  100% { transform: translate3d(0px,0px,0) scaleY(1); }
+}
+
+@keyframes fog-wob-b {
+  0% { transform: translate3d(0px,0px,0) scaleY(1); }
+  15% { transform: translate3d(-33.1px,17.9px,0) scaleY(0.961); }
+  20% { transform: translate3d(32.7px,11.6px,0) scaleY(1.063); }
+  23% { transform: translate3d(-19.0px,17.6px,0) scaleY(0.989); }
+  56% { transform: translate3d(-59.4px,-25.8px,0) scaleY(1.036); }
+  71% { transform: translate3d(41.5px,-7.4px,0) scaleY(1.064); }
+  82% { transform: translate3d(28.3px,-21.0px,0) scaleY(0.966); }
+  100% { transform: translate3d(0px,0px,0) scaleY(1); }
+}
+
+@keyframes drift {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
