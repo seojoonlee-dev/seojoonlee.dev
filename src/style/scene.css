@@ -20,10 +20,13 @@
 
 /* scene */
 .scene {
-  position: fixed;
-  inset: 0;
+  --under: 0px;
+  position: relative;
+  width: 100%;
+  height: calc(100vh + var(--under));
+  height: calc(100lvh + var(--under));
   overflow: hidden;
-  background-color: #101010;
+  background-color: #020202;
   background-image: url('../assets/textures/grain.png');
   background-size: 256px 256px;
   font-family: 'IM Fell English', serif;
@@ -87,7 +90,7 @@
 .fog {
   position: absolute;
   left: 0;
-  bottom: -70px;
+  bottom: calc(var(--under) - 70px);
   width: 8192px;
   height: 830px;
   background-image: url('../assets/textures/fog.webp');
@@ -102,7 +105,7 @@
 }
 
 .fog-front {
-  bottom: -80px;
+  bottom: calc(var(--under) - 80px);
   height: 860px;
   background-size: 4096px 860px;
   opacity: 0.075;
@@ -152,7 +155,8 @@
 
 .fade-bottom {
   bottom: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  height: calc(200px + var(--under));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) var(--under), rgba(0, 0, 0, 0));
 }
 
 /* header */
@@ -179,12 +183,6 @@
   font-size: 28px;
   line-height: 1;
   color: #9D485B;
-}
-
-.site-name-role {
-  font-size: 14px;
-  font-style: italic;
-  color: #938D8D;
 }
 
 .site-nav {
@@ -273,17 +271,46 @@
   }
 }
 
+/* under the browser bar */
+@media (pointer: coarse) {
+  .scene {
+    --under: 120px;
+  }
+}
+
+/* small screens */
+@media (max-width: 1024px) {
+  .site-header {
+    top: 28px;
+    left: 40px;
+    right: 40px;
+  }
+
+  .site-name-title {
+    font-size: 26px;
+  }
+
+  .site-nav {
+    gap: 22px;
+    font-size: 13.5px;
+  }
+}
+
 /* mobile */
 @media (max-width: 640px) {
   .site-header {
-    top: 24px;
-    left: 20px;
-    right: 20px;
+    top: max(18px, env(safe-area-inset-top));
+    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
+  }
+
+  .site-name-title {
+    font-size: 23px;
   }
 
   .site-nav {
     gap: 16px;
-    font-size: 12px;
+    font-size: 12.5px;
   }
 
   .flashlight {

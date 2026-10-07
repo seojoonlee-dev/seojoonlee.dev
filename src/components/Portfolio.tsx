@@ -51,7 +51,7 @@ export default function Portfolio() {
   const afterClose = useRef<(() => void) | null>(null);
   const closeTimer = useRef(0);
   const aimed = useRef(start);
-  const geo = useRef({ s: 1, gap: 560, mobile: false });
+  const geo = useRef({ s: 1, gap: 560, mobile: false, vh: 900 });
   const tilt = useRef({ x: 0, y: 0 });
   const flight = useRef(0);
   const heroT = useRef({ dx: 0, dy: 0, s: 1 });
@@ -147,10 +147,11 @@ export default function Portfolio() {
       setMobile(m);
       const w = m ? 420 : 1440;
       const h = m ? 860 : 900;
-      const s = Math.min(window.innerWidth / w, window.innerHeight / h);
-      const spare = Math.max(0, window.innerHeight / s - h) / 2;
+      const vh = stage.current?.parentElement?.clientHeight || window.innerHeight;
+      const s = Math.min(window.innerWidth / w, vh / h);
+      const spare = Math.max(0, vh / s - h) / 2;
       const gap = (m ? 600 : 560) + spare;
-      geo.current = { s, gap, mobile: m };
+      geo.current = { s, gap, mobile: m, vh };
       stage.current?.style.setProperty("--s", s.toFixed(4));
       stage.current?.style.setProperty("--t", Math.min(1.6, Math.max(1, 1 / s)).toFixed(4));
       stage.current?.style.setProperty("--gap", `${gap.toFixed(1)}px`);
@@ -219,6 +220,7 @@ export default function Portfolio() {
     };
     const onTouchMove = (e: TouchEvent) => {
       if (live.current.phase !== "closed" || touchY === null) return;
+      e.preventDefault();
       const y = e.touches[0].clientY;
       nudge((touchY - y) / (window.innerHeight * 0.5));
       touchY = y;
@@ -235,7 +237,7 @@ export default function Portfolio() {
     };
     window.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd);
     window.addEventListener("keydown", onKey);
     return () => {
@@ -299,7 +301,7 @@ export default function Portfolio() {
   );
 
   function onFrame(k: number, p: Pointer) {
-    const { s, gap, mobile: m } = geo.current;
+    const { s, gap, mobile: m, vh } = geo.current;
     if (live.current.phase !== "closed" || m || p.x < 0) return false;
     const i = live.current.cur;
     if (aimed.current !== i) {
@@ -314,7 +316,7 @@ export default function Portfolio() {
     if (d > N / 2) d -= N;
     const sc = 1 - Math.min(1, Math.abs(d)) * 0.1;
     const cx = window.innerWidth / 2 + (560 + 380 - 720) * s;
-    const cy = window.innerHeight / 2 + (230 + 220 - 450 + d * gap) * s;
+    const cy = vh / 2 + (230 + 220 - 450 + d * gap) * s;
     const w = 760 * sc * s;
     const h = 440 * sc * s;
     const left = cx - w / 2;

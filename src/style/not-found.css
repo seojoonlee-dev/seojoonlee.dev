@@ -1,7 +1,7 @@
 /* numeral */
 .nf-numeral {
   position: absolute;
-  inset: 0;
+  inset: 0 0 var(--under);
   z-index: 1;
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@
 /* message */
 .nf-main {
   position: absolute;
-  inset: 0;
+  inset: 0 0 var(--under);
   z-index: 5;
   display: flex;
   align-items: center;

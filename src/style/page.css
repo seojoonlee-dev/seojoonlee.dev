@@ -1,10 +1,11 @@
 /* page */
 .page {
   position: absolute;
-  inset: 0;
+  inset: 0 0 var(--under);
   z-index: 16;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
   scrollbar-width: none;
 }
 
