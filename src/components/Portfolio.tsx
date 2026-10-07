@@ -374,7 +374,7 @@ export default function Portfolio() {
       {!away && (
         <Meta
           title="Seojoon Lee · Software Developer"
-          description="Seojoon Lee is a software developer. Projects include GraphWrite, branching self-hosted markdown notes, and Silmari, a memory aid for people with ADHD."
+          description="Software Developer based in Seoul, South Korea."
           path="/"
           image="/og/home.jpg"
         />
