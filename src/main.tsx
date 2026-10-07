@@ -10,5 +10,9 @@ const app = (
   </StrictMode>
 )
 
+const loaded = () => document.documentElement.classList.add('loaded')
+if (document.readyState === 'complete') loaded()
+else window.addEventListener('load', loaded, { once: true })
+
 if (root.hasChildNodes()) hydrateRoot(root, app)
 else createRoot(root).render(app)

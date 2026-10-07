@@ -27,7 +27,7 @@
   height: calc(100lvh + var(--under));
   overflow: hidden;
   background-color: #020202;
-  background-image: url('../assets/textures/grain.png');
+  background-image: url('../assets/textures/grain.webp');
   background-size: 256px 256px;
   font-family: 'IM Fell English', serif;
   color: #CDC7C7;
@@ -221,9 +221,12 @@
   z-index: 25;
   pointer-events: none;
   opacity: 0.03;
-  background-image: url('../assets/textures/lens.webp');
   background-size: cover;
   background-position: center;
+}
+
+.loaded .lens {
+  background-image: url('../assets/textures/lens.webp');
 }
 
 /* flashlight */

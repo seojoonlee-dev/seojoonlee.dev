@@ -11,7 +11,7 @@ body {
 }
 
 body {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.875), rgba(0, 0, 0, 0.875)), url('./assets/textures/grain.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.875), rgba(0, 0, 0, 0.875)), url('./assets/textures/grain.webp');
   background-size: auto, 256px 256px;
   color: #CDC7C7;
 }

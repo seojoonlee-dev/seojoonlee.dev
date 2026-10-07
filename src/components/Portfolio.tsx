@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import { useNavigate, useParams } from "react-router";
 import Scene, { type Pointer } from "./Scene";
 import Float from "./Float";
@@ -29,6 +29,21 @@ const ease = (x: number) => {
 
 type Box = { left: number; top: number; width: number };
 
+function slideVars(i: number, pos: number) {
+  let d = wrap(i - pos);
+  if (d > N / 2) d -= N;
+  const a = Math.min(1, Math.abs(d));
+  return {
+    "--d": d.toFixed(4),
+    "--fade": (1 - a * 0.68).toFixed(3),
+    "--sc": (1 - a * 0.1).toFixed(4),
+    "--numop": Math.max(0, 1 - Math.abs(d) * 1.4).toFixed(3),
+    "--cg": Math.max(0, 1 - Math.abs(d) * 2).toFixed(3),
+    zIndex: String(Math.round(10 - Math.abs(d) * 3)),
+    visibility: Math.abs(d) < 1.7 ? "visible" : "hidden",
+  };
+}
+
 export default function Portfolio() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -38,7 +53,7 @@ export default function Portfolio() {
   const [cur, setCur] = useState(start);
   const [phase, setPhase] = useState<Phase>(urlIdx >= 0 ? "open" : "closed");
   const [openIdx, setOpenIdx] = useState(start);
-  const [mobile, setMobile] = useState(false);
+  const [initial] = useState(() => projects.map((_, i) => slideVars(i, start) as CSSProperties));
 
   const stage = useRef<HTMLDivElement>(null);
   const slides = useRef<(HTMLElement | null)[]>([]);
@@ -145,7 +160,8 @@ export default function Portfolio() {
   useLayoutEffect(() => {
     const fit = () => {
       const m = window.innerWidth < 820;
-      setMobile(m);
+      const root = document.documentElement;
+      root.toggleAttribute("data-mobile", m);
       const w = m ? 420 : 1440;
       const h = m ? 860 : 900;
       const vh = stage.current?.parentElement?.clientHeight || window.innerHeight;
@@ -153,10 +169,10 @@ export default function Portfolio() {
       const spare = Math.max(0, vh / s - h) / 2;
       const gap = (m ? 600 : 560) + spare;
       geo.current = { s, gap, mobile: m, vh };
-      stage.current?.style.setProperty("--s", s.toFixed(4));
-      stage.current?.style.setProperty("--t", Math.min(1.6, Math.max(1, 1 / s)).toFixed(4));
-      stage.current?.style.setProperty("--gap", `${gap.toFixed(1)}px`);
-      stage.current?.style.setProperty("--ngap", `${(gap * 0.45).toFixed(1)}px`);
+      root.style.setProperty("--s", s.toFixed(4));
+      root.style.setProperty("--t", Math.min(1.6, Math.max(1, 1 / s)).toFixed(4));
+      root.style.setProperty("--gap", `${gap.toFixed(1)}px`);
+      root.style.setProperty("--ngap", `${(gap * 0.45).toFixed(1)}px`);
     };
     fit();
     window.addEventListener("resize", fit);
@@ -178,16 +194,12 @@ export default function Portfolio() {
       drawn = m.pos;
       slides.current.forEach((el, i) => {
         if (!el) return;
-        let d = wrap(i - m.pos);
-        if (d > N / 2) d -= N;
-        const a = Math.min(1, Math.abs(d));
-        el.style.setProperty("--d", d.toFixed(4));
-        el.style.setProperty("--fade", (1 - a * 0.68).toFixed(3));
-        el.style.setProperty("--sc", (1 - a * 0.1).toFixed(4));
-        el.style.setProperty("--numop", Math.max(0, 1 - Math.abs(d) * 1.4).toFixed(3));
-        el.style.setProperty("--cg", Math.max(0, 1 - Math.abs(d) * 2).toFixed(3));
-        el.style.zIndex = String(Math.round(10 - Math.abs(d) * 3));
-        el.style.visibility = Math.abs(d) < 1.7 ? "visible" : "hidden";
+        const v = slideVars(i, m.pos);
+        for (const [k, val] of Object.entries(v)) {
+          if (k.startsWith("--")) el.style.setProperty(k, val);
+        }
+        el.style.zIndex = v.zIndex;
+        el.style.visibility = v.visibility;
       });
       const c = wrap(Math.round(m.pos));
       setCur((prev) => (prev === c ? prev : c));
@@ -382,11 +394,12 @@ export default function Portfolio() {
 
       {/* home */}
       <div className={`home ${phase}`} inert={away}>
-        <div className={`stage${mobile ? " mobile" : ""}`} ref={stage}>
+        <div className="stage" ref={stage}>
           {projects.map((p, i) => (
             <section
               key={p.slug}
               className="slide"
+              style={initial[i]}
               ref={(el) => {
                 slides.current[i] = el;
               }}
@@ -421,7 +434,7 @@ export default function Portfolio() {
                             shots.current[i] = el;
                           }}
                         >
-                          <img src={p.image} alt="" />
+                          <img src={p.image} alt="" fetchPriority={i === start ? "high" : "low"} />
                         </div>
                         <div className="edge-wrap fill" aria-hidden="true">
                           <div className="edge-soft">

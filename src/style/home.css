@@ -18,8 +18,6 @@
 
 /* stage */
 .stage {
-  --gap: 560px;
-  --ngap: 252px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -198,55 +196,53 @@
 }
 
 /* mobile */
-.stage.mobile {
-  --gap: 600px;
-  --ngap: 270px;
+[data-mobile] .stage {
   width: 420px;
   height: 860px;
 }
 
-.stage.mobile .numeral {
+[data-mobile] .stage .numeral {
   left: 10px;
   top: 110px;
 }
 
-.stage.mobile .numeral span {
+[data-mobile] .stage .numeral span {
   font-size: 260px;
 }
 
-.stage.mobile .shot-link {
+[data-mobile] .stage .shot-link {
   left: 20px;
   top: 170px;
   width: 380px;
   height: 220px;
 }
 
-.stage.mobile .tilt {
+[data-mobile] .stage .tilt {
   transform: none;
 }
 
-.stage.mobile .edge-wrap {
+[data-mobile] .stage .edge-wrap {
   display: none;
 }
 
-.stage.mobile .slide-text {
+[data-mobile] .stage .slide-text {
   left: 20px;
   top: 420px;
   width: 380px;
 }
 
-.stage.mobile .slide-title {
+[data-mobile] .stage .slide-title {
   font-size: calc(46px * min(var(--t, 1), 1.25));
 }
 
-.stage.mobile .slide-blurb {
+[data-mobile] .stage .slide-blurb {
   font-size: calc(22px * var(--t, 1));
 }
 
-.stage.mobile .slide-stack {
+[data-mobile] .stage .slide-stack {
   font-size: calc(16px * var(--t, 1));
 }
 
-.stage.mobile .slide-lines .label {
+[data-mobile] .stage .slide-lines .label {
   font-size: calc(16px * var(--t, 1));
 }
