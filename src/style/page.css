@@ -89,7 +89,7 @@
   font-size: clamp(19px, 1.7vw, 24px);
   line-height: 1.4;
   font-style: italic;
-  color: #938D8D;
+  color: #CDC7C7;
 }
 
 .page-details {
@@ -145,7 +145,7 @@
 }
 
 .paragraphs p + p {
-  color: #938D8D;
+  color: #CDC7C7;
 }
 
 .page-figure img {
@@ -159,7 +159,7 @@
   margin-top: 18px;
   font-size: 19px;
   line-height: 1.5;
-  color: #938D8D;
+  color: #CDC7C7;
 }
 
 .items {
@@ -168,7 +168,7 @@
   gap: 28px 48px;
   font-size: 19px;
   line-height: 1.5;
-  color: #938D8D;
+  color: #CDC7C7;
 }
 
 .items-2 {
@@ -188,7 +188,7 @@
   gap: 40px;
   font-size: 19px;
   line-height: 1.5;
-  color: #938D8D;
+  color: #CDC7C7;
 }
 
 .steps .label {
