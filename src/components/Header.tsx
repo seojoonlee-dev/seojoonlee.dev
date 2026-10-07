@@ -22,8 +22,7 @@ export default function Header({ back }: HeaderProps) {
             Back
           </button>
         )}
-        <Link to="/about">About</Link>
-        <Link to="/contact">Contact</Link>
+        <Link to="/profile">Profile</Link>
       </nav>
     </header>
   );
