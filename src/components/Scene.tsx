@@ -4,7 +4,14 @@ import "../style/scene.css";
 
 const MOUSE_K = 2;
 const EASE = 0.28;
+const TILT_RANGE = 15;
+const TILT_MAX = 0.6;
+const RECENTER = 4;
 const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const unit = (v: number) => Math.min(1, Math.max(-1, v));
+
+type Motion = { requestPermission?: () => Promise<string> };
+let tiltGranted = false;
 
 export type Pointer = { x: number; y: number };
 
@@ -72,6 +79,52 @@ export default function Scene({ children, onFrame, onLeave, back }: SceneProps) 
       cancelAnimationFrame(raf.current);
       raf.current = 0;
       clearTimeout(idle.current);
+    };
+  }, []);
+
+  /* tilt */
+  useEffect(() => {
+    if (!("DeviceOrientationEvent" in window) || !window.matchMedia("(pointer: coarse)").matches) return;
+    let base: { x: number; y: number } | null = null;
+    let prev = 0;
+    const onTilt = (e: DeviceOrientationEvent) => {
+      if (e.beta === null || e.gamma === null) return;
+      const angle = screen.orientation?.angle ?? 0;
+      let x = e.gamma;
+      let y = e.beta;
+      if (angle === 90) [x, y] = [e.beta, -e.gamma];
+      else if (angle === 270 || angle === -90) [x, y] = [-e.beta, e.gamma];
+      else if (angle === 180) [x, y] = [-x, -y];
+      const now = performance.now();
+      if (!base) {
+        base = { x, y };
+      } else {
+        const k = 1 - Math.exp(-(now - prev) / 1000 / RECENTER);
+        base.x += (x - base.x) * k;
+        base.y += (y - base.y) * k;
+      }
+      prev = now;
+      target.current.x = unit(-(x - base.x) / TILT_RANGE) * TILT_MAX;
+      target.current.y = unit(-(y - base.y) / TILT_RANGE) * TILT_MAX;
+      kick();
+    };
+    const listen = () => window.addEventListener("deviceorientation", onTilt);
+    const motion = DeviceOrientationEvent as unknown as Motion;
+    const ask = () => {
+      motion.requestPermission?.()
+        .then((r) => {
+          window.removeEventListener("touchend", ask);
+          if (r !== "granted") return;
+          tiltGranted = true;
+          listen();
+        })
+        .catch(() => {});
+    };
+    if (typeof motion.requestPermission !== "function" || tiltGranted) listen();
+    else window.addEventListener("touchend", ask);
+    return () => {
+      window.removeEventListener("touchend", ask);
+      window.removeEventListener("deviceorientation", onTilt);
     };
   }, []);
 
