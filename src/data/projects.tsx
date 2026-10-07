@@ -1,10 +1,10 @@
 import type { ComponentType, ReactNode } from "react";
 import GraphWrite from "../projects/GraphWrite";
 import Silmari from "../projects/Silmari";
-import Handheld from "../projects/Handheld";
+// import Handheld from "../projects/Handheld";
 import graphwrite from "../assets/projects/graphwrite-editor.webp";
 import silmari from "../assets/projects/silmari.webp";
-import handheld from "../assets/projects/handheld.webp";
+// import handheld from "../assets/projects/handheld.webp";
 
 export type Project = {
   slug: string;
@@ -56,22 +56,23 @@ export const projects: Project[] = [
       { term: "Links", value: <span className="links"><a href="https://github.com/seojoonlee-dev/silmari">Source</a><a href="https://youtu.be/glUuyvN1lBU?t=350">Featured in a judge’s video</a></span> },
     ],
     Body: Silmari,
-  },
-  {
-    slug: "handheld",
-    num: "III",
-    title: "Handheld",
-    date: "Aug. 2020 – Jan. 2022",
-    blurb: "A portable handheld gaming device.",
-    tagline: "A portable handheld gaming device.",
-    stack: "Raspberry Pi · LattePanda · Arduino · 3D printing",
-    image: handheld,
-    alt: "The handheld gaming device, held in two hands, running a racing game",
-    details: [
-      { term: "Stack", value: "Raspberry Pi, LattePanda, Arduino, 3D printing, 3D modeling" },
-      { term: "Links", value: <a href="https://github.com/Holdupp/handheld">Source</a> },
-    ],
-    Body: Handheld,
     last: true,
   },
+  // {
+  //   slug: "handheld",
+  //   num: "III",
+  //   title: "Handheld",
+  //   date: "Aug. 2020 – Jan. 2022",
+  //   blurb: "A portable handheld gaming device.",
+  //   tagline: "A portable handheld gaming device.",
+  //   stack: "Raspberry Pi · LattePanda · Arduino · 3D printing",
+  //   image: handheld,
+  //   alt: "The handheld gaming device, held in two hands, running a racing game",
+  //   details: [
+  //     { term: "Stack", value: "Raspberry Pi, LattePanda, Arduino, 3D printing, 3D modeling" },
+  //     { term: "Links", value: <a href="https://github.com/Holdupp/handheld">Source</a> },
+  //   ],
+  //   Body: Handheld,
+  //   last: true,
+  // },
 ];

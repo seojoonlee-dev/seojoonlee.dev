@@ -10,9 +10,17 @@ import "../style/home.css";
 
 type Phase = "closed" | "opening" | "open" | "closing";
 
-const N = projects.length;
+const P = projects.length;
+const strip = P >= 3 ? projects : [...projects, ...projects];
+const N = strip.length;
 const wrap = (i: number) => ((i % N) + N) % N;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+function toward(from: number, to: number) {
+  let k = wrap(to - from);
+  if (k > N / 2) k -= N;
+  return k;
+}
 
 const bez = (a: number, b: number, t: number) => 3 * a * t * (1 - t) ** 2 + 3 * b * t * t * (1 - t) + t ** 3;
 const ease = (x: number) => {
@@ -53,7 +61,7 @@ export default function Portfolio() {
   const [cur, setCur] = useState(start);
   const [phase, setPhase] = useState<Phase>(urlIdx >= 0 ? "open" : "closed");
   const [openIdx, setOpenIdx] = useState(start);
-  const [initial] = useState(() => projects.map((_, i) => slideVars(i, start) as CSSProperties));
+  const [initial] = useState(() => strip.map((_, i) => slideVars(i, start) as CSSProperties));
 
   const stage = useRef<HTMLDivElement>(null);
   const slides = useRef<(HTMLElement | null)[]>([]);
@@ -187,6 +195,13 @@ export default function Portfolio() {
       const m = motion.current;
       m.pos += (m.target - m.pos) * 0.04;
       if (Math.abs(m.target - m.pos) < 0.0005) m.pos = m.target;
+      const at = wrap(Math.round(m.pos));
+      if (at >= P && m.pos === m.target && m.target === m.base && live.current.phase === "closed") {
+        m.pos -= P;
+        m.target -= P;
+        m.base -= P;
+        reset(at);
+      }
       if (m.pos === drawn) {
         raf = requestAnimationFrame(tick);
         return;
@@ -267,16 +282,16 @@ export default function Portfolio() {
   useEffect(() => {
     const p = live.current.phase;
     if (urlIdx >= 0 && p === "closed") {
-      const shot = shots.current[urlIdx];
       const m = motion.current;
-      if (shot && wrap(Math.round(m.pos)) === urlIdx && settled()) {
-        flatten(urlIdx);
+      const at = wrap(Math.round(m.pos));
+      const shot = shots.current[at];
+      if (shot && at % P === urlIdx && settled()) {
+        flatten(at);
         flightFrom.current = shot.getBoundingClientRect();
-        setOpenIdx(urlIdx);
+        setOpenIdx(at);
         setPhase("opening");
       } else {
-        const k = urlIdx - wrap(Math.round(m.base));
-        m.base += k;
+        m.base += toward(m.base, urlIdx);
         m.target = m.base;
         m.pos = m.base;
         flightFrom.current = null;
@@ -362,7 +377,7 @@ export default function Portfolio() {
 
   function openCurrent() {
     if (live.current.phase !== "closed" || !settled()) return;
-    navigate(`/projects/${projects[live.current.cur].slug}`);
+    navigate(`/projects/${strip[live.current.cur].slug}`);
   }
 
   function onShotClick(e: MouseEvent<HTMLAnchorElement>) {
@@ -378,8 +393,8 @@ export default function Portfolio() {
   if (slug && urlIdx < 0) return <NotFound />;
 
   const away = phase !== "closed";
-  const project = projects[openIdx];
-  const next = projects[wrap(openIdx + 1)];
+  const project = strip[openIdx];
+  const next = strip[wrap(openIdx + 1)];
 
   return (
     <Scene onFrame={onFrame} onLeave={onLeave} home={!away} back={{ visible: phase === "open" || phase === "opening", onClick: () => navigate("/") }}>
@@ -395,9 +410,9 @@ export default function Portfolio() {
       {/* home */}
       <div className={`home ${phase}`} inert={away}>
         <div className="stage" ref={stage}>
-          {projects.map((p, i) => (
+          {strip.map((p, i) => (
             <section
-              key={p.slug}
+              key={`${p.slug}-${i}`}
               className="slide"
               style={initial[i]}
               ref={(el) => {
