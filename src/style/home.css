@@ -150,6 +150,7 @@
   left: 120px;
   top: 330px;
   width: 400px;
+  opacity: var(--numop);
 }
 
 .slide-lines {
@@ -160,26 +161,26 @@
 
 .slide-lines .label {
   display: block;
-  font-size: 16px;
+  font-size: calc(16px * var(--t, 1));
   letter-spacing: 0.14em;
 }
 
 .slide-title {
-  font-size: 60px;
+  font-size: calc(60px * min(var(--t, 1), 1.25));
   font-weight: 400;
   line-height: 1.02;
   color: #CDC7C7;
 }
 
 .slide-blurb {
-  font-size: 21px;
+  font-size: calc(21px * var(--t, 1));
   line-height: 1.4;
   font-style: italic;
   color: #938D8D;
 }
 
 .slide-stack {
-  font-size: 15px;
+  font-size: calc(15px * var(--t, 1));
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #A6767C;
@@ -235,17 +236,17 @@
 }
 
 .stage.mobile .slide-title {
-  font-size: 40px;
+  font-size: calc(46px * min(var(--t, 1), 1.25));
 }
 
 .stage.mobile .slide-blurb {
-  font-size: 18px;
+  font-size: calc(22px * var(--t, 1));
 }
 
 .stage.mobile .slide-stack {
-  font-size: 13px;
+  font-size: calc(16px * var(--t, 1));
 }
 
 .stage.mobile .slide-lines .label {
-  font-size: 13px;
+  font-size: calc(16px * var(--t, 1));
 }

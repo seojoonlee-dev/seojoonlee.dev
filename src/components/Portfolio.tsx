@@ -84,6 +84,7 @@ export default function Portfolio() {
       const gap = (m ? 600 : 560) + spare;
       geo.current = { s, gap, mobile: m };
       stage.current?.style.setProperty("--s", s.toFixed(4));
+      stage.current?.style.setProperty("--t", Math.min(1.6, Math.max(1, 1 / s)).toFixed(4));
       stage.current?.style.setProperty("--gap", `${gap.toFixed(1)}px`);
       stage.current?.style.setProperty("--ngap", `${(gap * 0.45).toFixed(1)}px`);
     };

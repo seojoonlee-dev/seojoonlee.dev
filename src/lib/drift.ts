@@ -1,3 +1,5 @@
+import { useSyncExternalStore } from "react";
+
 const LOOP: [number, number][] = [
   [0.122, -0.6799],
   [0.3458, -0.6437],
@@ -27,10 +29,29 @@ const LOOP: [number, number][] = [
 
 const DRIFT_K = 2.5;
 
+const SCALES: [number, number][] = [
+  [640, 0.12],
+  [1024, 0.4],
+];
+
+function scale() {
+  const w = window.innerWidth;
+  return SCALES.find(([max]) => w <= max)?.[1] ?? 1;
+}
+
+function subscribe(cb: () => void) {
+  window.addEventListener("resize", cb);
+  return () => window.removeEventListener("resize", cb);
+}
+
+export function useDriftScale() {
+  return useSyncExternalStore(subscribe, scale, () => 1);
+}
+
 const f = (v: number) => v.toFixed(2);
 
-export function driftPath(reach: number) {
-  const r = reach * DRIFT_K;
+export function driftPath(reach: number, k = 1) {
+  const r = reach * DRIFT_K * k;
   const p = LOOP.map(([x, y]) => [x * r, y * r]);
   const n = p.length;
   let d = `M ${f(p[0][0])} ${f(p[0][1])}`;
