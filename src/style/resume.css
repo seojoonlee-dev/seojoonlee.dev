@@ -40,10 +40,19 @@ body:has(.resume) {
     inset: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 4rem 3rem;
     background: #111111;
     color: white;
     font-family: 'Source Serif 4', serif;
+}
+
+.resume-sheet {
+    box-sizing: border-box;
+    width: 816px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+    zoom: var(--rz, 1);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 .resume-back {
@@ -142,7 +151,9 @@ body:has(.resume) {
 
 @media (max-width: 900px) {
     .resume-back {
-        position: absolute;
+        position: static;
+        display: block;
+        padding: 16px;
     }
 }
 
@@ -157,10 +168,15 @@ body:has(.resume) {
         background: white;
     }
 
+    .resume-sheet {
+        width: auto;
+        padding: 0;
+        zoom: 1;
+    }
+
     .resume-page {
         position: static;
         overflow: visible;
-        padding: 0;
         background-color: white;
         color: black;
     }

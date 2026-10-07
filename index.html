@@ -15,6 +15,7 @@
         r.style.setProperty("--t", Math.min(1.6, Math.max(1, 1 / s)).toFixed(4));
         r.style.setProperty("--gap", g.toFixed(1) + "px");
         r.style.setProperty("--ngap", (g * 0.45).toFixed(1) + "px");
+        if (location.pathname === "/resume") r.style.setProperty("--rz", Math.min(1, W / 816).toFixed(4));
       })();
     </script>
   </head>
