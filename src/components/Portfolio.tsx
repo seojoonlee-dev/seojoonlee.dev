@@ -13,6 +13,21 @@ const N = projects.length;
 const wrap = (i: number) => ((i % N) + N) % N;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
+const bez = (a: number, b: number, t: number) => 3 * a * t * (1 - t) ** 2 + 3 * b * t * t * (1 - t) + t ** 3;
+const ease = (x: number) => {
+  let lo = 0;
+  let hi = 1;
+  let t = x;
+  for (let i = 0; i < 20; i++) {
+    t = (lo + hi) / 2;
+    if (bez(0.76, 0.24, t) < x) lo = t;
+    else hi = t;
+  }
+  return bez(0, 1, t);
+};
+
+type Box = { left: number; top: number; width: number };
+
 export default function Portfolio() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -38,6 +53,8 @@ export default function Portfolio() {
   const aimed = useRef(start);
   const geo = useRef({ s: 1, gap: 560, mobile: false });
   const tilt = useRef({ x: 0, y: 0 });
+  const flight = useRef(0);
+  const heroT = useRef({ dx: 0, dy: 0, s: 1 });
 
   useEffect(() => {
     live.current = { phase, cur, openIdx };
@@ -54,22 +71,73 @@ export default function Portfolio() {
     return Math.abs(m.target - m.pos) < 0.15;
   }
 
-  function close() {
+  function reset(i: number) {
+    const slide = slides.current[i];
+    const t = slide?.querySelector<HTMLElement>(".tilt");
+    const e = slide?.querySelector<HTMLElement>(".edge-wrap");
+    if (t) t.style.transform = "none";
+    e?.style.setProperty("--glow", "0");
+  }
+
+  function flatten(i: number) {
+    reset(i);
+    tilt.current = { x: 0, y: 0 };
+  }
+
+  function fly(from: (natural: Box) => Box, to: (natural: Box) => Box, ms: number, done?: () => void) {
+    cancelAnimationFrame(flight.current);
     const h = hero.current;
-    const target = shots.current[live.current.openIdx];
-    if (h && target) {
-      const hr = h.getBoundingClientRect();
-      const t = target.getBoundingClientRect();
-      h.style.transition = "transform 0.9s cubic-bezier(0.76, 0, 0.24, 1)";
-      h.style.transform = `translate3d(${t.left - hr.left}px, ${t.top - hr.top}px, 0) scale(${t.width / hr.width})`;
-    }
+    const img = h?.querySelector("img");
+    if (!h || !img) return false;
+    h.style.transition = "none";
+    const t0 = performance.now();
+    const frame = (now: number) => {
+      const x = Math.min(1, (now - t0) / ms);
+      const e = x < 1 ? ease(x) : 1;
+      const st = heroT.current;
+      const hb = h.getBoundingClientRect();
+      const ib = img.getBoundingClientRect();
+      const bx = hb.left - st.dx;
+      const by = hb.top - st.dy;
+      const bw = hb.width / st.s;
+      const ix = (ib.left - hb.left) / st.s;
+      const iy = (ib.top - hb.top) / st.s;
+      const natural = { left: bx + ix, top: by + iy, width: bw };
+      const a = from(natural);
+      const b = to(natural);
+      const left = a.left + (b.left - a.left) * e;
+      const top = a.top + (b.top - a.top) * e;
+      const sc = (a.width + (b.width - a.width) * e) / bw;
+      heroT.current = { dx: left - bx - sc * ix, dy: top - by - sc * iy, s: sc };
+      const n = heroT.current;
+      h.style.transform = `translate3d(${n.dx.toFixed(2)}px, ${n.dy.toFixed(2)}px, 0) scale(${n.s.toFixed(5)})`;
+      if (x < 1) {
+        flight.current = requestAnimationFrame(frame);
+      } else {
+        flight.current = 0;
+        done?.();
+      }
+    };
+    frame(t0);
+    return true;
+  }
+
+  function close() {
+    const i = live.current.openIdx;
+    const target = shots.current[i];
+    const img = hero.current?.querySelector("img");
+    flatten(i);
     setPhase("closing");
     clearTimeout(closeTimer.current);
-    closeTimer.current = window.setTimeout(() => {
+    const finish = () => {
       setPhase("closed");
       afterClose.current?.();
       afterClose.current = null;
-    }, 920);
+    };
+    const start = img?.getBoundingClientRect();
+    if (!target || !start || !fly(() => start, () => target.getBoundingClientRect(), 900, finish)) {
+      closeTimer.current = window.setTimeout(finish, 920);
+    }
   }
 
   /* stage fit */
@@ -187,6 +255,7 @@ export default function Portfolio() {
       const shot = shots.current[urlIdx];
       const m = motion.current;
       if (shot && wrap(Math.round(m.pos)) === urlIdx && settled()) {
+        flatten(urlIdx);
         flightFrom.current = shot.getBoundingClientRect();
         setOpenIdx(urlIdx);
         setPhase("opening");
@@ -214,30 +283,20 @@ export default function Portfolio() {
       setPhase("open");
       return;
     }
-    const to = h.getBoundingClientRect();
-    h.style.transition = "none";
-    h.style.transform = `translate3d(${from.left - to.left}px, ${from.top - to.top}px, 0) scale(${from.width / to.width})`;
-    h.getBoundingClientRect();
-    const raf = requestAnimationFrame(() => {
-      h.style.transition = "transform 1s cubic-bezier(0.76, 0, 0.24, 1)";
-      h.style.transform = "none";
-    });
+    heroT.current = { dx: 0, dy: 0, s: 1 };
+    h.style.transform = "none";
+    fly(() => from, (natural) => natural, 1000);
     const t = window.setTimeout(() => setPhase("open"), 450);
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t);
-    };
+    return () => clearTimeout(t);
   }, [phase]);
 
-  useEffect(() => () => clearTimeout(closeTimer.current), []);
-
-  function reset(i: number) {
-    const slide = slides.current[i];
-    const t = slide?.querySelector<HTMLElement>(".tilt");
-    const e = slide?.querySelector<HTMLElement>(".edge-wrap");
-    if (t) t.style.transform = "none";
-    e?.style.setProperty("--glow", "0");
-  }
+  useEffect(
+    () => () => {
+      clearTimeout(closeTimer.current);
+      cancelAnimationFrame(flight.current);
+    },
+    [],
+  );
 
   function onFrame(k: number, p: Pointer) {
     const { s, gap, mobile: m } = geo.current;
