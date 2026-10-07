@@ -25,6 +25,7 @@ export default function Header({ back, home }: HeaderProps) {
           </button>
         )}
         <Link to="/profile">Profile</Link>
+        <Link to="/resume">Resume</Link>
       </nav>
     </header>
   );

@@ -4,7 +4,7 @@ import { createStaticHandler, createStaticRouter, StaticRouterProvider } from "r
 import { routes } from "./routes";
 import { projects } from "./data/projects";
 
-export const paths = ["/", "/profile", ...projects.map((p) => `/projects/${p.slug}`)];
+export const paths = ["/", "/profile", "/resume", ...projects.map((p) => `/projects/${p.slug}`)];
 
 export async function render(path: string) {
   const handler = createStaticHandler(routes);
