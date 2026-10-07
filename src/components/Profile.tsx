@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import Scene from "./Scene";
+import Meta, { Person } from "./Meta";
 import { Block, Labeled } from "./ProjectPage";
 import { projects } from "../data/projects";
 import "../style/profile.css";
@@ -32,7 +33,13 @@ export default function Profile() {
 
   return (
     <Scene>
-      <title>Profile · Seojoon Lee</title>
+      <Meta
+        title="Profile · Seojoon Lee"
+        description="Seojoon Lee, Software Developer. Contact details and a list of projects."
+        path="/profile"
+        image="/og/profile.jpg"
+      />
+      <Person />
       <div className={`page${shown ? " in" : ""}`}>
         <div className="profile">
           {/* intro */}

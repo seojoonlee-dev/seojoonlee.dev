@@ -179,6 +179,7 @@
 
 .site-name-title {
   white-space: nowrap;
+  font-weight: 400;
   font-family: 'Manufacturing Consent', serif;
   font-size: 28px;
   line-height: 1;

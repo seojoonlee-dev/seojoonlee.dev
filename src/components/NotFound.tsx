@@ -1,12 +1,14 @@
 import { Link } from "react-router";
 import Scene from "./Scene";
 import Float from "./Float";
+import Meta from "./Meta";
 import "../style/not-found.css";
 
 export default function NotFound() {
   return (
     <Scene>
-      <title>Page not found · Seojoon Lee</title>
+      <Meta title="Page not found · Seojoon Lee" description="This page does not exist." image="/og/home.jpg" />
+      <meta name="robots" content="noindex" />
 
       {/* numeral */}
       <div className="nf-numeral" aria-hidden="true">

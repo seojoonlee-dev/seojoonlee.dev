@@ -20,9 +20,10 @@ type SceneProps = {
   onFrame?: (k: number, pointer: Pointer) => boolean;
   onLeave?: () => void;
   back?: { visible: boolean; onClick: () => void };
+  home?: boolean;
 };
 
-export default function Scene({ children, onFrame, onLeave, back }: SceneProps) {
+export default function Scene({ children, onFrame, onLeave, back, home }: SceneProps) {
   const root = useRef<HTMLDivElement>(null);
   const flashlight = useRef<HTMLDivElement>(null);
   const idle = useRef(0);
@@ -175,7 +176,7 @@ export default function Scene({ children, onFrame, onLeave, back }: SceneProps) 
       <div className="fade-top" aria-hidden="true" />
       <div className="fade-bottom" aria-hidden="true" />
 
-      <Header back={back} />
+      <Header back={back} home={home} />
 
       {/* lens */}
       <div className="lens" aria-hidden="true" />

@@ -1,5 +1,6 @@
 import type { ReactNode, Ref } from "react";
 import Float from "./Float";
+import Meta from "./Meta";
 import type { Project } from "../data/projects";
 import "../style/page.css";
 
@@ -63,7 +64,12 @@ export default function ProjectPage({ project, phase, heroRef, pageRef, nextTitl
 
   return (
     <div className={`page${state}`} ref={pageRef} aria-label={project.title}>
-      <title>{`${project.title} · Seojoon Lee`}</title>
+      <Meta
+        title={`${project.title} · Seojoon Lee`}
+        description={project.tagline}
+        path={`/projects/${project.slug}`}
+        image={`/og/${project.slug}.jpg`}
+      />
       <div className="page-inner">
         {/* top */}
         <div className="page-top">

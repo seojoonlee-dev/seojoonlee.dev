@@ -4,6 +4,7 @@ import Scene, { type Pointer } from "./Scene";
 import Float from "./Float";
 import ProjectPage from "./ProjectPage";
 import NotFound from "./NotFound";
+import Meta, { Person } from "./Meta";
 import { projects } from "../data/projects";
 import "../style/home.css";
 
@@ -369,8 +370,16 @@ export default function Portfolio() {
   const next = projects[wrap(openIdx + 1)];
 
   return (
-    <Scene onFrame={onFrame} onLeave={onLeave} back={{ visible: phase === "open" || phase === "opening", onClick: () => navigate("/") }}>
-      {!away && <title>Seojoon Lee</title>}
+    <Scene onFrame={onFrame} onLeave={onLeave} home={!away} back={{ visible: phase === "open" || phase === "opening", onClick: () => navigate("/") }}>
+      {!away && (
+        <Meta
+          title="Seojoon Lee · Software Developer"
+          description="Seojoon Lee is a software developer. Projects include GraphWrite, branching self-hosted markdown notes, and Silmari, a memory aid for people with ADHD."
+          path="/"
+          image="/og/home.jpg"
+        />
+      )}
+      {!away && <Person />}
 
       {/* home */}
       <div className={`home ${phase}`} inert={away}>

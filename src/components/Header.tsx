@@ -2,13 +2,15 @@ import { Link } from "react-router";
 
 type HeaderProps = {
   back?: { visible: boolean; onClick: () => void };
+  home?: boolean;
 };
 
-export default function Header({ back }: HeaderProps) {
+export default function Header({ back, home }: HeaderProps) {
+  const Name = home ? "h1" : "span";
   return (
     <header className="site-header">
       <Link to="/" className="site-name">
-        <span className="site-name-title">Seojoon Lee</span>
+        <Name className="site-name-title">Seojoon Lee</Name>
       </Link>
       <nav className="site-nav" aria-label="Site">
         {back && (
