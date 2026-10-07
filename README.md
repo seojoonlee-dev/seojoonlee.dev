@@ -1,10 +1,3 @@
 # seojoonlee.dev
 
-Personal portfolio. React + Vite + React Router, deployed to Cloudflare Workers.
-
-```sh
-npm install
-npm run dev
-npm run build
-npm run lint
-```
+My personal website! Built with React. Heavily inspired by [Kentato Shikura](https://kentatoshikura.com/) and the album cover for c by Lucy Bedroque.
