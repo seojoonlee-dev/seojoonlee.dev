@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from "react";
+import { useEffect, useRef, type ReactNode, type Ref } from "react";
 import Float from "./Float";
 import Meta from "./Meta";
 import type { Project } from "../data/projects";
@@ -61,6 +61,12 @@ type ProjectPageProps = {
 export default function ProjectPage({ project, phase, heroRef, pageRef, nextTitle, onNext }: ProjectPageProps) {
   const Body = project.Body;
   const state = phase === "open" ? " in" : phase === "closing" ? " out" : "";
+  const title = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const a = document.activeElement;
+    if (!a || a === document.body || a.closest(".home")) title.current?.focus({ preventScroll: true });
+  }, [project.slug]);
 
   return (
     <div className={`page${state}`} ref={pageRef} aria-label={project.title}>
@@ -80,7 +86,7 @@ export default function ProjectPage({ project, phase, heroRef, pageRef, nextTitl
 
           <Block delay={0.1} kx={36} ky={24} className="page-title">
             <span className="label">{project.date}</span>
-            <h1>{project.title}</h1>
+            <h1 ref={title} tabIndex={-1}>{project.title}</h1>
             <p>{project.tagline}</p>
           </Block>
 

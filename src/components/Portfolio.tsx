@@ -79,6 +79,7 @@ export default function Portfolio() {
   const tilt = useRef({ x: 0, y: 0 });
   const flight = useRef(0);
   const heroT = useRef({ dx: 0, dy: 0, s: 1 });
+  const refocus = useRef(false);
 
   useEffect(() => {
     live.current = { phase, cur, openIdx };
@@ -157,6 +158,8 @@ export default function Portfolio() {
       setPhase("closed");
       afterClose.current?.();
       afterClose.current = null;
+      const a = document.activeElement;
+      refocus.current = !a || a === document.body || !!a.closest(".page, .site-back");
     };
     const start = img?.getBoundingClientRect();
     if (!target || !start || !fly(() => start, () => target.getBoundingClientRect(), 900, finish)) {
@@ -201,6 +204,7 @@ export default function Portfolio() {
         m.target -= P;
         m.base -= P;
         reset(at);
+        if (document.activeElement === links.current[at]) links.current[at - P]?.focus({ preventScroll: true });
       }
       if (m.pos === drawn) {
         raf = requestAnimationFrame(tick);
@@ -327,6 +331,12 @@ export default function Portfolio() {
     return () => clearTimeout(t);
   }, [phase]);
 
+  useEffect(() => {
+    if (phase !== "closed" || !refocus.current) return;
+    refocus.current = false;
+    links.current[openIdx]?.focus({ preventScroll: true });
+  }, [phase, openIdx]);
+
   useEffect(
     () => () => {
       clearTimeout(closeTimer.current);
@@ -387,6 +397,14 @@ export default function Portfolio() {
     navigate(`/projects/${strip[live.current.cur].slug}`);
   }
 
+  function onShotFocus(i: number) {
+    const m = motion.current;
+    if (live.current.phase !== "closed" || i === wrap(Math.round(m.base))) return;
+    m.k = 0.04;
+    m.base += toward(m.base, i);
+    m.target = m.base;
+  }
+
   function onShotClick(e: MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
     openCurrent();
@@ -420,13 +438,12 @@ export default function Portfolio() {
           {strip.map((p, i) => (
             <section
               key={`${p.slug}-${i}`}
-              className="slide"
+              className={`slide${i === cur ? " on" : ""}`}
               style={initial[i]}
               ref={(el) => {
                 slides.current[i] = el;
               }}
-              aria-hidden={i !== cur}
-              inert={i !== cur}
+              aria-hidden={i >= P && i !== cur}
             >
               {/* numeral */}
               <div className="numeral" aria-hidden="true">
@@ -442,6 +459,8 @@ export default function Portfolio() {
                   href={`/projects/${p.slug}`}
                   aria-label={`${p.title}, open project`}
                   onClick={onShotClick}
+                  onFocus={() => onShotFocus(i)}
+                  tabIndex={i >= P && i !== cur ? -1 : undefined}
                   ref={(el) => {
                     links.current[i] = el;
                   }}

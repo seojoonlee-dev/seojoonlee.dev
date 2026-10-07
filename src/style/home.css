@@ -37,7 +37,7 @@
   inset: 0;
 }
 
-.slide[inert] {
+.slide:not(.on) {
   pointer-events: none;
 }
 

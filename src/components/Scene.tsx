@@ -170,13 +170,13 @@ export default function Scene({ children, onFrame, onLeave, back, home }: SceneP
         </div>
       </div>
 
+      <Header back={back} home={home} />
+
       {children}
 
       {/* edge gradients */}
       <div className="fade-top" aria-hidden="true" />
       <div className="fade-bottom" aria-hidden="true" />
-
-      <Header back={back} home={home} />
 
       {/* lens */}
       <div className="lens" aria-hidden="true" />
