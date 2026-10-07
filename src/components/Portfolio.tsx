@@ -69,7 +69,7 @@ export default function Portfolio() {
   const shots = useRef<(HTMLDivElement | null)[]>([]);
   const hero = useRef<HTMLDivElement>(null);
   const page = useRef<HTMLDivElement>(null);
-  const motion = useRef({ pos: start, target: start, base: start });
+  const motion = useRef({ pos: start, target: start, base: start, k: 0.04 });
   const live = useRef({ phase, cur, openIdx });
   const flightFrom = useRef<DOMRect | null>(null);
   const afterClose = useRef<(() => void) | null>(null);
@@ -193,7 +193,7 @@ export default function Portfolio() {
     let drawn = NaN;
     const tick = () => {
       const m = motion.current;
-      m.pos += (m.target - m.pos) * 0.04;
+      m.pos += (m.target - m.pos) * m.k;
       if (Math.abs(m.target - m.pos) < 0.0005) m.pos = m.target;
       const at = wrap(Math.round(m.pos));
       if (at >= P && m.pos === m.target && m.target === m.base && live.current.phase === "closed") {
@@ -241,6 +241,7 @@ export default function Portfolio() {
     };
     const onWheel = (e: WheelEvent) => {
       if (live.current.phase !== "closed") return;
+      m.k = 0.04;
       nudge(clamp(e.deltaY / 520, -0.6, 0.6));
     };
     const onTouchStart = (e: TouchEvent) => {
@@ -249,17 +250,23 @@ export default function Portfolio() {
     const onTouchMove = (e: TouchEvent) => {
       if (live.current.phase !== "closed" || touchY === null) return;
       e.preventDefault();
+      m.k = 0.075;
       const y = e.touches[0].clientY;
-      nudge((touchY - y) / (window.innerHeight * 0.5));
+      nudge((touchY - y) / (window.innerHeight * 0.23));
       touchY = y;
     };
     const onTouchEnd = () => {
+      if (touchY !== null && m.target !== m.base) {
+        clearTimeout(snapTimer);
+        snap();
+      }
       touchY = null;
     };
     const onKey = (e: KeyboardEvent) => {
       const p = live.current.phase;
       if (p === "open" && e.key === "Escape") navigate("/");
       if (p !== "closed") return;
+      m.k = 0.04;
       if (e.key === "ArrowDown" || e.key === "PageDown") step(1);
       if (e.key === "ArrowUp" || e.key === "PageUp") step(-1);
     };
